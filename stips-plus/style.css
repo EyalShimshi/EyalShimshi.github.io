@@ -1,0 +1,524 @@
+/* The Stips+ page looks like the app: Material 3, dark only, in Stips+'s own scheme (seed #09C286, the app's tone
+   table: SchemeGenerator.kt and Theme.kt), with its grouped rows, chips, buttons, update card, state layers and ripple. */
+
+:root {
+  color-scheme: dark;
+  --primary: #4bdfa2;
+  --on-primary: #003824;
+  --primary-container: #005236;
+  --on-primary-container: #6cfcbd;
+  --secondary-container: #2b4e3d;
+  --on-secondary-container: #c4ecd7;
+  --surface: #0b1510;
+  --on-surface: #dae5df;
+  --on-surface-variant: #b6cbc0;
+  --outline-variant: #384b41;
+  --surface-container: #19211d;
+  --surface-container-high: #242c27;
+  font-family: Roboto, "Google Sans Text", system-ui, -apple-system, "Segoe UI", "Noto Sans Hebrew", Arial, sans-serif;
+  line-height: 1.5;
+  interpolate-size: allow-keywords;
+}
+
+/* One language at a time: app.js sets <html lang>. */
+:root[lang="he"] [lang="en"],
+:root[lang="en"] [lang="he"] {
+  display: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--surface);
+}
+
+body {
+  margin: 0;
+  color: var(--on-surface);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--primary);
+}
+
+svg {
+  fill: currentColor;
+  flex: none;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Icons that point somewhere turn around in Hebrew. */
+[dir="rtl"] .mirror {
+  transform: scaleX(-1);
+}
+
+/* State layers: the content's own color at 8% on hover and 10% when focused or pressed; a ripple from the finger. */
+.ripple {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ripple::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.ripple:hover::before {
+  opacity: 0.08;
+}
+
+.ripple:focus-visible::before,
+.ripple:active::before {
+  opacity: 0.1;
+}
+
+.wave {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.12;
+  transform: scale(0);
+  animation: wave 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes wave {
+  60% {
+    opacity: 0.12;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Small top app bar: surface, then surface container once the page scrolls under it; the title shows once the big one
+   has gone, as on the app's profile screen. */
+.top-app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 64px;
+  padding: 0 4px;
+  background: var(--surface);
+  transition: background-color 0.2s;
+}
+
+.top-app-bar.scrolled {
+  background: var(--surface-container);
+}
+
+.bar-title {
+  flex: 1;
+  min-width: 0;
+  padding: 0 8px;
+  overflow: hidden;
+  font-size: 22px;
+  line-height: 28px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.top-app-bar.titled .bar-title {
+  opacity: 1;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--on-surface);
+}
+
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 20px;
+  background: none;
+  color: var(--primary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 8px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px 20px;
+  text-align: center;
+}
+
+.hero-icon {
+  margin-bottom: 16px;
+}
+
+h1 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 45px;
+  font-weight: 500;
+  line-height: 52px;
+}
+
+.headline {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.hero .body {
+  max-width: 30em;
+  margin: 12px 0 24px;
+  color: var(--on-surface-variant);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.filled-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 28px;
+  border-radius: 28px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+
+.filled-button:hover {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.filled-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.meta {
+  margin: 12px 0 0;
+  color: var(--on-surface-variant);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Filter chips, selected. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-inline: 8px 16px;
+  border-radius: 8px;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.chip svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* An outlined card. */
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  color: var(--on-surface-variant);
+}
+
+.info-card svg {
+  width: 24px;
+  height: 24px;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* The app's settings groups: a label in primary, then rows with 24 dp outer and 4 dp inner corners, 2 dp apart. */
+.group-label {
+  margin: 0;
+  padding: 24px 16px 8px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.group > * {
+  border-radius: 4px;
+  background: var(--surface-container);
+}
+
+.group > :first-child {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+.group > :last-child {
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 16px;
+}
+
+.leading {
+  width: 24px;
+  height: 24px;
+  color: var(--on-surface-variant);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.list-item .headline,
+summary .headline {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.supporting {
+  color: var(--on-surface-variant);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-size: 16px;
+  font-weight: 500;
+  flex: none;
+}
+
+/* As the app's card for a newer Stips+ on Home. */
+.update-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 24px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.update-card svg {
+  width: 24px;
+  height: 24px;
+}
+
+.update-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.update-card .card-title {
+  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* Expandable rows. */
+.group > details {
+  overflow: hidden;
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 56px;
+  padding: 12px 16px;
+  list-style: none;
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary .headline {
+  flex: 1;
+}
+
+.chevron {
+  width: 24px;
+  height: 24px;
+  color: var(--on-surface-variant);
+  transition: transform 0.2s;
+}
+
+details[open] .chevron {
+  transform: rotate(180deg);
+}
+
+details .supporting {
+  margin: 0;
+  padding: 0 16px 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 0.25s cubic-bezier(0.2, 0, 0, 1), content-visibility 0.25s allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* As the end of the app's Settings: the credit line and a tonal button. */
+.credit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px 40px;
+  text-align: center;
+}
+
+.credit p {
+  margin: 0;
+  color: var(--on-surface-variant);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tonal-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding-inline: 16px 24px;
+  border-radius: 20px;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.tonal-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
