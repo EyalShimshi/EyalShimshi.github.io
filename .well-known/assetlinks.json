@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.eyalshimshi.betterstips",
+      "sha256_cert_fingerprints": ["C0:11:8F:1A:84:A7:63:A7:BC:13:AE:6F:9C:89:80:3C:49:97:87:45:D7:4B:B9:31:B0:BB:9E:16:52:1E:35:2C"]
+    }
+  }
+]

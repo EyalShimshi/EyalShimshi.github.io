@@ -85,8 +85,10 @@
     });
   }
 
-  // Every build is a pre-release named build-N with stipsplus-N.apk (GitHub's "latest" skips pre-releases). Without
-  // an answer (offline, or GitHub's 60 calls an hour), the button stays on the Releases page.
+  // A release for everyone is build-N with stipsplus-N.apk; test builds (dev-N) are never offered here. Since the
+  // app's 0.23 a release is GitHub's "latest" too, so that's asked first; the older releases were pre-releases, so the
+  // list is the fallback. Without an answer (offline, or GitHub's 60 calls an hour), the button stays on the Releases
+  // page.
   function newest(releases) {
     var best = null;
     for (var i = 0; i < releases.length; i++) {
@@ -137,14 +139,22 @@
   }
 
   if (!window.fetch) return;
-  fetch("https://api.github.com/repos/" + REPO + "/releases?per_page=20", {
-    headers: { Accept: "application/vnd.github+json" },
-  })
-    .then(function (response) {
+  function ask(path) {
+    return fetch("https://api.github.com/repos/" + REPO + path, {
+      headers: { Accept: "application/vnd.github+json" },
+    }).then(function (response) {
       return response.ok ? response.json() : null;
+    });
+  }
+  ask("/releases/latest")
+    .then(function (latest) {
+      var best = latest && !Array.isArray(latest) ? newest([latest]) : null;
+      if (best) return best;
+      return ask("/releases?per_page=30").then(function (releases) {
+        return Array.isArray(releases) ? newest(releases) : null;
+      });
     })
-    .then(function (releases) {
-      var best = Array.isArray(releases) ? newest(releases) : null;
+    .then(function (best) {
       if (best) show(best);
     })
     .catch(function () {
