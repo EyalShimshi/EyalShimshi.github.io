@@ -46,6 +46,15 @@ a {
   color: var(--primary);
 }
 
+/* The signing certificate's digest: one long word, left to right in either language. */
+code {
+  font-family: ui-monospace, "Roboto Mono", monospace;
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 svg {
   fill: currentColor;
   flex: none;
